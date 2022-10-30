@@ -1,0 +1,35 @@
+{
+  "name": "nosana-secret-manager",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "eslint --ignore-path .gitignore . --fix"
+  },
+  "dependencies": {
+    "@koa/cors": "3.3.0",
+    "@project-serum/anchor": "0.24.2",
+    "@solana/spl-token": "0.2.0",
+    "@solana/web3.js": "1.39.1",
+    "axios": "0.26.1",
+    "bs58": "5.0.0",
+    "dotenv": "16.0.0",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "8.5.1",
+    "koa": "2.13.4",
+    "koa-bodyparser": "4.3.0",
+    "koa-router": "10.1.1",
+    "lodash": "4.17.21",
+    "tweetnacl": "1.0.3",
+    "uuid": "8.3.2",
+    "yup": "0.32.11"
+  },
+  "devDependencies": {
+    "eslint": "8.15.0",
+    "nodemon": "2.0.15"
+  }
+}

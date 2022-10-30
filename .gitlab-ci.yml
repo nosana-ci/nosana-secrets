@@ -1,0 +1,27 @@
+include:
+  - project: nosana-ci/tools/cicd/gitlab-ci
+    file: docker-container.yml
+
+variables:
+  DOCKERFILE_DIR: .
+
+.npm:
+  image: node:16-alpine # align with Dockerfile
+  cache:
+    paths:
+      - node_modules
+    key: $CI_COMMIT_SHORT_SHA
+
+npm ci:
+  extends: .npm
+  stage: build
+  script: npm ci
+  rules:
+    - if: $CI_MERGE_REQUEST_ID || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+npm run lint:
+  extends: .npm
+  stage: test
+  script: npm run lint
+  rules:
+    - if: $CI_MERGE_REQUEST_ID || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

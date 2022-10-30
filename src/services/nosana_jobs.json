@@ -1,0 +1,746 @@
+{
+  "version": "0.1.0",
+  "name": "nosana_jobs",
+  "instructions": [
+    {
+      "name": "open",
+      "docs": [
+        "The `open()` instruction initializes a [MarketAccount](#market-account)",
+        "and [VaultAccount](#vault-account)."
+      ],
+      "accounts": [
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "accessKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "jobExpiration",
+          "type": "i64"
+        },
+        {
+          "name": "jobPrice",
+          "type": "u64"
+        },
+        {
+          "name": "jobTimeout",
+          "type": "i64"
+        },
+        {
+          "name": "jobType",
+          "type": "u8"
+        },
+        {
+          "name": "nodeXnosMinimum",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "docs": [
+        "The `update()` instruction updates a [MarketAccount](#market-account) configurations."
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "accessKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "jobExpiration",
+          "type": "i64"
+        },
+        {
+          "name": "jobPrice",
+          "type": "u64"
+        },
+        {
+          "name": "jobTimeout",
+          "type": "i64"
+        },
+        {
+          "name": "jobType",
+          "type": "u8"
+        },
+        {
+          "name": "nodeStakeMinimum",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "close",
+      "docs": [
+        "The `close()` instruction closes a [MarketAccount](#market-account) and the",
+        "associated [VaultAccount](#vault-account). The vault has to be empty of tokens."
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "list",
+      "docs": [
+        "The `list()` instruction lists a job, with its required data.",
+        "When there is a job available, a [RunAccount](#run-account) will automatically be created."
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "run",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "rewardsReflection",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "rewardsVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "rewardsProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "ipfsJob",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "recover",
+      "docs": [
+        "The `recover()` instruction recovers funds from a jobs that has been [Quit](#quit)'ed."
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "market",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "work",
+      "docs": [
+        "With the `work()` instruction a node enters the [MarketAccount](#market-account) queue.",
+        "When there is a job available, a [RunAccount](#run-account) will automatically be created.",
+        "The node needs to hold a [Burner Phone](/tokens/nft) and have [`xNOS`](/programs/staking)."
+      ],
+      "accounts": [
+        {
+          "name": "run",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "stake",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "nft",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "metadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "stop",
+      "docs": [
+        "With the `stop()` instruction a node exits the node queue from a",
+        "[MarketAccount](#market-account)."
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claim",
+      "docs": [
+        "With the `claim()` instruction a node claims a job that is [stopped](#stop).",
+        "The node needs to hold a [Burner Phone](/tokens/nft) and have [`xNOS`](/programs/stake)."
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "run",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stake",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "nft",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "metadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "finish",
+      "docs": [
+        "With the `finish()` instruction a node can can post the result for a job it has finished,",
+        "and be reimbursed for the work."
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "run",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "market",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "ipfsResult",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "quit",
+      "docs": [
+        "With the `quit()` instruction a node can quit a job that it has started."
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "run",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "clean",
+      "docs": [
+        "The `clean()` instruction closes an [JobAccount](#job-account).",
+        "The job has be finished and the job expiration time has to be exceeded."
+      ],
+      "accounts": [
+        {
+          "name": "job",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "market",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "MarketAccount",
+      "docs": [
+        "The `MarketAccount` struct holds all the information about jobs and the nodes queue."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "jobExpiration",
+            "type": "i64"
+          },
+          {
+            "name": "jobPrice",
+            "type": "u64"
+          },
+          {
+            "name": "jobTimeout",
+            "type": "i64"
+          },
+          {
+            "name": "jobType",
+            "type": "u8"
+          },
+          {
+            "name": "vault",
+            "type": "publicKey"
+          },
+          {
+            "name": "vaultBump",
+            "type": "u8"
+          },
+          {
+            "name": "nodeAccessKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "nodeXnosMinimum",
+            "type": "u64"
+          },
+          {
+            "name": "queueType",
+            "type": "u8"
+          },
+          {
+            "name": "queue",
+            "type": {
+              "vec": "publicKey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "JobAccount",
+      "docs": [
+        "The `JobAccount` struct holds all the information about any individual jobs."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ipfsJob",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "ipfsResult",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "market",
+            "type": "publicKey"
+          },
+          {
+            "name": "node",
+            "type": "publicKey"
+          },
+          {
+            "name": "payer",
+            "type": "publicKey"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "project",
+            "type": "publicKey"
+          },
+          {
+            "name": "state",
+            "type": "u8"
+          },
+          {
+            "name": "timeEnd",
+            "type": "i64"
+          },
+          {
+            "name": "timeStart",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RunAccount",
+      "docs": [
+        "The `RunAccount` struct holds temporary information that matches nodes to jobs."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "job",
+            "type": "publicKey"
+          },
+          {
+            "name": "node",
+            "type": "publicKey"
+          },
+          {
+            "name": "payer",
+            "type": "publicKey"
+          },
+          {
+            "name": "state",
+            "type": "u8"
+          },
+          {
+            "name": "time",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "QueueType",
+      "docs": [
+        "The `QueueType` describes the type of queue"
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Job"
+          },
+          {
+            "name": "Node"
+          },
+          {
+            "name": "Empty"
+          }
+        ]
+      }
+    },
+    {
+      "name": "JobState",
+      "docs": [
+        "The `JobState` describes the status of a job."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Queued"
+          },
+          {
+            "name": "Running"
+          },
+          {
+            "name": "Done"
+          },
+          {
+            "name": "Stopped"
+          }
+        ]
+      }
+    },
+    {
+      "name": "JobType",
+      "docs": [
+        "The `JobType` describes the type of any job."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Default"
+          },
+          {
+            "name": "Small"
+          },
+          {
+            "name": "Medium"
+          },
+          {
+            "name": "Large"
+          },
+          {
+            "name": "Gpu"
+          },
+          {
+            "name": "Unknown"
+          }
+        ]
+      }
+    }
+  ]
+}

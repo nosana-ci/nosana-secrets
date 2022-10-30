@@ -1,0 +1,17 @@
+# ignore the scripts directory
+scripts
+
+# ignore git
+.git
+
+# ignore node modules
+node_modules
+
+# Ignoring all the other files
+README.md
+docker-compose.yml
+renovate.json
+Dockerfile
+.gitlab-ci.yml
+.gitignore
+.dockerignore

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  nosana-secret-manager:
+    image: node:16-alpine
+    working_dir: /code
+    command: npm run dev
+    ports:
+      - 4123:4123
+    volumes:
+      - ./:/code:cached
+    environment:
+      - NODE_ENV=development
+      - APP_ENV=development
