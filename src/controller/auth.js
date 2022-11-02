@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken');
-const db = require('../services/database');
-const uuid = require('uuid').v4;
 const bs58 = require('bs58');
 const nacl = require('tweetnacl');
-const { Keypair } = require('@solana/web3.js');
 
 const {
     ValidationError,
@@ -14,11 +11,9 @@ const config = require('../generic/config');
 
 const { privateCert } = config.keys;
 
-async function generateJwtToken(user) {
+async function generateJwtToken(address) {
     var payload = {
-        id: user.id,
-        address: user.address,
-        roles: user.roles ? user.roles.split(',') : []
+        address
     };
 
     // some of the libraries and libraries written in other language,
@@ -32,6 +27,11 @@ async function generateJwtToken(user) {
 }
 
 module.exports = {
+    payload: ctx => {
+        const { user } = ctx.state;
+
+        ctx.ok(user);
+    },
     generateJwtToken,
     login: async ctx => {
         const data = ctx.request.body;
@@ -43,48 +43,15 @@ module.exports = {
             throw new ValidationError('timestamp expired');
         }
 
-        let user_address;
-        let loginUser;
-        const message = new TextEncoder().encode('nosana_' + data.timestamp);
+        let address;
+        const message = new TextEncoder().encode('nosana_secret_' + data.timestamp);
         if (!nacl.sign.detached.verify(
             message, new Uint8Array(data.signature.data), new Uint8Array(data.address.data))) {
             throw new ValidationError('invalid signature');
         }
-        user_address = bs58.encode(new Uint8Array(data.address.data));
-        loginUser = await db('user')
-            .first()
-            .where({ address: user_address });
+        address = bs58.encode(new Uint8Array(data.address.data));
 
-        if (!loginUser) {
-            const keypair = Keypair.generate();
-            let newUser = {
-                address: user_address,
-                generated_address: keypair.publicKey.toString(),
-                private_key: bs58.encode(keypair.secretKey)
-            };
-            newUser.id = uuid();
-            try {
-                await db('user').insert(newUser);
-                await db('project').insert({user_id: newUser.id});
-            } catch (err) {
-                if (err.code === 'ER_DUP_ENTRY') {
-                    if (err.sqlMessage.includes('user_address_unique'))
-                        throw new ValidationError({ address: 'User already exists' });
-                }
-                throw err;
-            }
-
-            loginUser = await db('user')
-                .first()
-                .where({ address: newUser.address });
-        }
-
-
-        if (loginUser.status !== 'ACTIVE') {
-            throw new ForbiddenError('Your account is not active');
-        }
-
-        const token = await generateJwtToken(loginUser);
+        const token = await generateJwtToken(address);
 
         ctx.ok({ token });
     }
