@@ -71,7 +71,7 @@ module.exports = {
             if (!job) {
                 throw new ValidationError('Could not find job:' + data.job);
             }
-            if (job.state >= 3) {
+            if (job.state >= 2) {
                 throw new ValidationError('Job already finished:' + data.job);
             }
             if (job.node.toString() !== address) {
