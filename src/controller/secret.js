@@ -9,6 +9,22 @@ const {
 } = require('../generic/errors');
 
 module.exports = {
+    setSecrets: async ctx => {
+        const { secrets } = ctx.request.body;
+        const { user } = ctx.state;
+        const address = user.address;
+        // const secrets = {'key': 'value'};
+        // const address = 'test';
+        const fileStore = new KevastFile(`./secrets/${address}.json`);
+        const kevast = new Kevast(fileStore);
+        kevast.use(new KevastEncrypt(config.encryptionKey));
+        for (const key in secrets) {
+            console.log(`storing secret for ${address}.${key}`);
+            await kevast.set(key, secrets[key]);
+        }
+
+        ctx.ok();
+    },
     getSecrets: async ctx => {
         const { secrets } = ctx.request.body;
         const { user } = ctx.state;
@@ -26,5 +42,4 @@ module.exports = {
 
         ctx.ok(decryptedSecrets);
     },
-
 };

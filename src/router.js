@@ -7,7 +7,9 @@ const authController = require('./controller/auth');
 const secretController = require('./controller/secret');
 
 router.post('/login', authController.login);
-router.get('/secrets', secretController.getSecrets);
+router.get('/secrets', authenticated, secretController.getSecrets);
+router.post('/secrets', authenticated, secretController.setSecrets);
+
 
 // Public routes
 router.get('/', async ctx => {
