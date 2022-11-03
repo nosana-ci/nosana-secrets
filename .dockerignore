@@ -15,3 +15,5 @@ Dockerfile
 .gitlab-ci.yml
 .gitignore
 .dockerignore
+
+secrets/

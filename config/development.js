@@ -1,13 +1,14 @@
 const {
-
+    ENCRYPTION_KEY
 } = process.env;
 
 module.exports = {
     env: 'development',
     debug: true,
     auth: {
-        tokenExpire: '10h'
+        tokenExpire: '1h'
     },
+    encryptionKey: ENCRYPTION_KEY || 'secret',
     blockchain: {
         solanaNet: 'devnet',
         nosTokenProgramId: 'devr1BGQndEW5k5zfvG5FsLyZv1Ap73vNgAHcQ9sUVP',

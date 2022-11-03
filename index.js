@@ -6,8 +6,6 @@ const contextMiddleware = require('./src/middleware/context');
 const bodyParser = require('koa-bodyparser');
 const errorMiddleware = require('./src/middleware/error');
 const userMiddleware = require('./src/middleware/user');
-const schedule = require('node-schedule');
-const commitController = require('./src/controller/commit');
 
 const app = new Koa();
 
@@ -24,5 +22,3 @@ app.use(corsMiddelware())
 
 app.listen(4123, () => console.log('running on port 4123'));
 
-// Should run every 5 minutes
-const job = schedule.scheduleJob('*/5 * * * *', commitController.cronCheckJobs);

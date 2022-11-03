@@ -1,5 +1,5 @@
 const {
-    // DEBUG
+    ENCRYPTION_KEY
 } = process.env;
 
 module.exports = {
@@ -8,6 +8,7 @@ module.exports = {
     auth: {
         tokenExpire: '10h'
     },
+    encryptionKey: ENCRYPTION_KEY,
     blockchain: {
         solanaNet: 'https://lively-sparkling-shape.solana-mainnet.discover.quiknode.pro/515f35af4d64f05ab7b10cd8cd88f34f9d1ec7d0',
         nosTokenProgramId: 'nosXBVoaCTtYdLvKY6Csb4AC8JCdQKKAaWYtx2ZMoo7',

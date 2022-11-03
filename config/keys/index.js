@@ -3,9 +3,8 @@ const path = require('path');
 
 const {
     AUTH_PUBLIC_KEY,
-    AUTH_PRIVATE_KEY,
-    GITHUB_PRIVATE_KEY
-} = process.env;
+    AUTH_PRIVATE_KEY
+ } = process.env;
 
 let privateCert = AUTH_PRIVATE_KEY;
 if(!privateCert) {
@@ -28,23 +27,10 @@ if(!publicCert) {
     publicCert = publicCert.replace(/\\n/gm, '\n');
 }
 
-let githubPrivateKey = GITHUB_PRIVATE_KEY;
-if(!githubPrivateKey) {
-    const appEnv = process.env.APP_ENV || process.env.NODE_ENV || 'development';
-    const githubPrivateKeyFilePath =
-        process.env.GITHUB_PRIVATE_KEY_FILE ||
-        (appEnv === 'production' ? path.resolve(__dirname, './githubPrivate.key') : path.resolve(__dirname, './githubPrivateDev.key'));
-
-        githubPrivateKey = fs.readFileSync(githubPrivateKeyFilePath);
-} else {
-    githubPrivateKey = githubPrivateKey.replace(/\\n/gm, '\n');
-}
-
 module.exports = Object.assign(
     {},
     {
         privateCert,
-        publicCert,
-        githubPrivateKey
+        publicCert
     }
 );

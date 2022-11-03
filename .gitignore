@@ -22,3 +22,6 @@ yarn-error.log*
 *.sln
 *.sw*
 *.iml
+
+secrets/*
+!secrets/README.md

@@ -4,7 +4,7 @@
   "private": true,
   "description": "",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon index.js --ignore secrets/",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ignore-path .gitignore .",
@@ -20,6 +20,9 @@
     "dotenv": "16.0.0",
     "fs": "0.0.1-security",
     "jsonwebtoken": "8.5.1",
+    "kevast": "^0.4.3",
+    "kevast-encrypt": "^0.1.1",
+    "kevast-file": "^0.0.5",
     "koa": "2.13.4",
     "koa-bodyparser": "4.3.0",
     "koa-router": "10.1.1",
