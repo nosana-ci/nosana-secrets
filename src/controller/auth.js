@@ -1,6 +1,17 @@
 const jwt = require('jsonwebtoken');
 const bs58 = require('bs58');
 const nacl = require('tweetnacl');
+const anchor = require('@project-serum/anchor');
+const { AnchorClient } = require('../services/solana');
+class FakeWallet {
+    constructor (payer) {
+        this.payer = payer;
+    }
+
+    get publicKey () {
+        return this.payer.publicKey;
+    }
+}
 
 const {
     ValidationError,
@@ -11,9 +22,10 @@ const config = require('../generic/config');
 
 const { privateCert } = config.keys;
 
-async function generateJwtToken(address) {
+async function generateJwtToken(address, userAddress) {
     var payload = {
-        address
+        address,
+        userAddress
     };
 
     // some of the libraries and libraries written in other language,
@@ -51,7 +63,24 @@ module.exports = {
         }
         address = bs58.encode(new Uint8Array(data.address.data));
 
-        const token = await generateJwtToken(address);
+        let userAddress;
+        if (data.job) {
+            const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate());
+            const anchorClient = await new AnchorClient(fakeWallet);
+            const job = await anchorClient.fetchJob(data.job);
+            if (!job) {
+                throw new ValidationError('Could not find job:' + data.job);
+            }
+            if (job.state >= 3) {
+                throw new ValidationError('Job already finished:' + data.job);
+            }
+            if (job.node.toString() !== address) {
+                throw new ValidationError('You did not claim this job:' + data.job);
+            }
+            userAddress = job.project;
+        }
+
+        const token = await generateJwtToken(address, userAddress);
 
         ctx.ok({ token });
     }

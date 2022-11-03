@@ -7,13 +7,12 @@ const { Kevast } = require('kevast');
 const { KevastFile } = require('kevast-file');
 const { KevastEncrypt } = require('kevast-encrypt');
 
-// const authenticated = require('./middleware/auth');
-// const admin = require('./middleware/admin');
 
-// const authController = require('./controller/auth');
-// const userController = require('./controller/user');
-// const generalController = require('./controller/general');
+const authenticated = require('./middleware/auth');
+const authController = require('./controller/auth');
+const secretController = require('./controller/secret');
 
+router.post('/login', authController.login);
 
 // Public routes
 router.get('/', async ctx => {
