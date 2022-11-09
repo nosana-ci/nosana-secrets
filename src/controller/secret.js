@@ -32,7 +32,6 @@ module.exports = {
             userAddress = user.address;
         }
         const secrets = Object.keys(require(`../../secrets/${userAddress}.json`));
-        console.log(secrets);
         // const userAddress = 'test';
         const fileStore = new KevastFile(`./secrets/${userAddress}.json`);
         const kevast = new Kevast(fileStore);
