@@ -7,5 +7,5 @@ COPY . /app
 WORKDIR /app
 RUN npm ci
 
-EXPOSE 4123
+EXPOSE 4124
 ENTRYPOINT ["npm", "run", "start"]
