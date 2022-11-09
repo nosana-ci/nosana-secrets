@@ -31,8 +31,9 @@ module.exports = {
         if (!userAddress) {
             userAddress = user.address;
         }
-        const secrets = Object.keys(require(`../../secrets/${userAddress}.json`));
         // const userAddress = 'test';
+        delete require.cache[require.resolve(`../../secrets/${userAddress}.json`)];
+        const secrets = Object.keys(require(`../../secrets/${userAddress}.json`));
         const fileStore = new KevastFile(`./secrets/${userAddress}.json`);
         const kevast = new Kevast(fileStore);
         kevast.use(new KevastEncrypt(config.encryptionKey));
