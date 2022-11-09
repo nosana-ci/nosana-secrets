@@ -26,10 +26,13 @@ module.exports = {
         ctx.ok();
     },
     getSecrets: async ctx => {
-        const { secrets } = ctx.request.body;
         const { user } = ctx.state;
-        const userAddress = user.userAddress;
-        // const secrets = ['key'];
+        let userAddress = user.userAddress;
+        if (!userAddress) {
+            userAddress = user.address;
+        }
+        const secrets = Object.keys(require(`../../secrets/${userAddress}.json`));
+        console.log(secrets);
         // const userAddress = 'test';
         const fileStore = new KevastFile(`./secrets/${userAddress}.json`);
         const kevast = new Kevast(fileStore);
