@@ -55,13 +55,12 @@ module.exports = {
             throw new ValidationError('timestamp expired');
         }
 
-        let address;
+        const address_bytes = bs58.decode(data.address);
+        const signature_bytes = bs58.decode(data.signature);
         const message = new TextEncoder().encode('nosana_secret_' + data.timestamp);
-        if (!nacl.sign.detached.verify(
-            message, new Uint8Array(data.signature.data), new Uint8Array(data.address.data))) {
+        if (!nacl.sign.detached.verify(message, signature_bytes, address_bytes)) {
             throw new ValidationError('invalid signature');
         }
-        address = bs58.encode(new Uint8Array(data.address.data));
 
         let userAddress;
         if (data.job) {
@@ -74,13 +73,13 @@ module.exports = {
             if (job.state >= 2) {
                 throw new ValidationError('Job already finished:' + data.job);
             }
-            if (job.node.toString() !== address) {
+            if (job.node.toString() !== data.address) {
                 throw new ValidationError('You did not claim this job:' + data.job);
             }
             userAddress = job.project;
         }
 
-        const token = await generateJwtToken(address, userAddress);
+        const token = await generateJwtToken(data.address, userAddress);
 
         ctx.ok({ token });
     }
