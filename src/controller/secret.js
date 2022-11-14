@@ -32,9 +32,17 @@ module.exports = {
             userAddress = user.address;
         }
         // const userAddress = 'test';
-        delete require.cache[require.resolve(`../../secrets/${userAddress}.json`)];
-        const secrets = Object.keys(require(`../../secrets/${userAddress}.json`));
-        const fileStore = new KevastFile(`./secrets/${userAddress}.json`);
+        let secrets;
+        let fileStore;
+        try {
+            delete require.cache[require.resolve(`../../secrets/${userAddress}.json`)];
+            secrets = Object.keys(require(`../../secrets/${userAddress}.json`));
+            fileStore = new KevastFile(`./secrets/${userAddress}.json`);
+        } catch (err) {
+            // no secrets yet, so return empty object
+            return ctx.ok({});
+        }
+
         const kevast = new Kevast(fileStore);
         kevast.use(new KevastEncrypt(config.encryptionKey));
         decryptedSecrets = {};
@@ -45,4 +53,20 @@ module.exports = {
 
         ctx.ok(decryptedSecrets);
     },
+    deleteSecret: async ctx => {
+        const { user } = ctx.state;
+        const { key } = ctx.request.body;
+        let userAddress = user.userAddress;
+        if (!userAddress) {
+            userAddress = user.address;
+        }
+        const fileStore = new KevastFile(`./secrets/${userAddress}.json`);
+        const kevast = new Kevast(fileStore);
+        try {
+            kevast.remove(key);
+        } catch (e) {
+            throw new Error(e);
+        }
+        ctx.ok();
+    }
 };

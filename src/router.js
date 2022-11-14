@@ -9,6 +9,7 @@ const secretController = require('./controller/secret');
 router.post('/login', authController.login);
 router.get('/secrets', authenticated, secretController.getSecrets);
 router.post('/secrets', authenticated, secretController.setSecrets);
+router.delete('/secrets', authenticated, secretController.deleteSecret);
 
 
 // Public routes
