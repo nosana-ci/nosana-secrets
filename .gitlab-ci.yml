@@ -4,6 +4,10 @@ include:
 
 variables:
   DOCKERFILE_DIR: .
+  RUN_AUTO_BUMP: ok
+  AUTO_BUMP_REPO: nosana-ci/apps/platform/k8s
+  AUTO_BUMP_FILE: helm-secrets.tf
+  AUTO_BUMP_SCG_PREFIX: image_tag [^}]*= { dev = \"
 
 .npm:
   image: node:16-alpine # align with Dockerfile
