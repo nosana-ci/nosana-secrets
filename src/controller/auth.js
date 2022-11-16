@@ -3,6 +3,7 @@ const bs58 = require('bs58');
 const nacl = require('tweetnacl');
 const anchor = require('@project-serum/anchor');
 const { AnchorClient } = require('../services/solana');
+const ipfs = require('../services/ipfs');
 class FakeWallet {
     constructor (payer) {
         this.payer = payer;
@@ -22,7 +23,7 @@ const config = require('../generic/config');
 
 const { privateCert } = config.keys;
 
-async function generateJwtToken(address, userAddress) {
+async function generateJwtToken(address, userAddress, secrets) {
     var payload = {
         address,
         userAddress
@@ -63,6 +64,7 @@ module.exports = {
         }
 
         let userAddress;
+        let secrets;
         if (data.job) {
             const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate());
             const anchorClient = await new AnchorClient(fakeWallet);
@@ -77,9 +79,12 @@ module.exports = {
                 throw new ValidationError('You did not claim this job:' + data.job);
             }
             userAddress = job.project;
+            const hash = ipfs.solHashToIpfsHash(job.ipfsJob);
+            const ipfsJob = await ipfs.retrieve(hash);
+            secrets = ipfsJob.secrets;
         }
 
-        const token = await generateJwtToken(data.address, userAddress);
+        const token = await generateJwtToken(data.address, userAddress, secrets);
 
         ctx.ok({ token });
     }
