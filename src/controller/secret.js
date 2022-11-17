@@ -28,15 +28,20 @@ module.exports = {
     getSecrets: async ctx => {
         const { user } = ctx.state;
         let userAddress = user.userAddress;
+        let secrets = user.secrets;
         if (!userAddress) {
+            // retrieve all your own secrets
             userAddress = user.address;
-        }
-        // const userAddress = 'test';
-        let secrets;
+            try {
+                delete require.cache[require.resolve(`../../secrets/${userAddress}.json`)];
+                secrets = Object.keys(require(`../../secrets/${userAddress}.json`));
+            } catch (err) {
+                // no secrets yet, so return empty object
+                return ctx.ok({});
+            }
+        }        
         let fileStore;
         try {
-            delete require.cache[require.resolve(`../../secrets/${userAddress}.json`)];
-            secrets = Object.keys(require(`../../secrets/${userAddress}.json`));
             fileStore = new KevastFile(`./secrets/${userAddress}.json`);
         } catch (err) {
             // no secrets yet, so return empty object
@@ -48,7 +53,11 @@ module.exports = {
         decryptedSecrets = {};
         for (let i = 0; i < secrets.length; i++) {
             console.log(`decrypting secret for ${userAddress}.${secrets[i]}`);
-            decryptedSecrets[secrets[i]] = await kevast.get(secrets[i]);
+            try {
+                decryptedSecrets[secrets[i]] = await kevast.get(secrets[i]);
+            } catch (e) {
+                console.error(`Could not decrypt ${secrets[i]}`, e);
+            }
         }
 
         ctx.ok(decryptedSecrets);
@@ -56,17 +65,9 @@ module.exports = {
     deleteSecret: async ctx => {
         const { user } = ctx.state;
         const { key } = ctx.request.body;
-        let userAddress = user.userAddress;
-        if (!userAddress) {
-            userAddress = user.address;
-        }
-        const fileStore = new KevastFile(`./secrets/${userAddress}.json`);
+        const fileStore = new KevastFile(`./secrets/${user.address}.json`);
         const kevast = new Kevast(fileStore);
-        try {
-            kevast.remove(key);
-        } catch (e) {
-            throw new Error(e);
-        }
+        await kevast.remove(key);
         ctx.ok();
     }
 };
