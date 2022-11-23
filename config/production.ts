@@ -1,4 +1,4 @@
-const { ENCRYPTION_KEY } = process.env;
+const { STORAGE_CONNECTION } = process.env;
 
 export default {
   env: "production",
@@ -6,7 +6,7 @@ export default {
   auth: {
     tokenExpire: "10h",
   },
-  encryptionKey: ENCRYPTION_KEY,
+  storageConnection: STORAGE_CONNECTION || "sqlite://db.sqlite",
   blockchain: {
     solanaNet:
       "https://lively-sparkling-shape.solana-mainnet.discover.quiknode.pro/515f35af4d64f05ab7b10cd8cd88f34f9d1ec7d0",

@@ -25,3 +25,4 @@ yarn-error.log*
 
 secrets/*
 !secrets/README.md
+db.sqlite
