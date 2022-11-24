@@ -12,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:16-alpine
+FROM node:16
 
 ENV NODE_ENV=production \
     APP_ENV=production
@@ -28,6 +28,14 @@ RUN npm ci --production
 COPY config/keys ./config/keys
 
 COPY --from=builder /app/dist ./
+
+# Download and prepare CA-certificate for AWS DocumentDB
+RUN curl -O https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem && \
+    openssl x509 -in rds-combined-ca-bundle.pem -inform PEM -out rds-combined-ca-bundle.crt && \
+    rm rds-combined-ca-bundle.pem
+
+# Install CA-certificate for AWS DocumentDB
+RUN update-ca-certificates
 
 EXPOSE 4124
 ENTRYPOINT ["npm", "run", "start"]
