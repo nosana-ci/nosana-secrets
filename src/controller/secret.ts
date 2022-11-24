@@ -7,7 +7,19 @@ export default {
     const { secrets } = ctx.request.body;
     const { user } = ctx.state;
     const address = user.address;
-    const storage = new Keyv(config.storageConnection, { namespace: address });
+    let storage;
+    if (config.storageConnection.includes("docdb.amazonaws.com")) {
+      storage = new Keyv(config.storageConnection, {
+        namespace: address,
+        ssl: true,
+        sslValidate: true,
+        sslCA: "rds-combined-ca-bundle.pem",
+      });
+    } else {
+      storage = new Keyv(config.storageConnection, {
+        namespace: address,
+      });
+    }
 
     for (const key in secrets) {
       console.log(`storing secret for ${address}.${key}`);
@@ -26,9 +38,19 @@ export default {
       userAddress = user.address;
       retrieveAllSecrets = true;
     }
-    const storage = new Keyv(config.storageConnection, {
-      namespace: userAddress,
-    });
+    let storage;
+    if (config.storageConnection.includes("docdb.amazonaws.com")) {
+      storage = new Keyv(config.storageConnection, {
+        namespace: userAddress,
+        ssl: true,
+        sslValidate: true,
+        sslCA: "rds-combined-ca-bundle.pem",
+      });
+    } else {
+      storage = new Keyv(config.storageConnection, {
+        namespace: userAddress,
+      });
+    }
     const secrets: { [key: string]: any } = {};
     if (retrieveAllSecrets) {
       for await (const [key, value] of storage.iterator()) {

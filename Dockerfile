@@ -31,8 +31,7 @@ COPY --from=builder /app/dist ./
 
 # Download and prepare CA-certificate for AWS DocumentDB
 RUN curl -O https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem && \
-    openssl x509 -in rds-combined-ca-bundle.pem -inform PEM -out rds-combined-ca-bundle.crt && \
-    rm rds-combined-ca-bundle.pem
+    openssl x509 -in rds-combined-ca-bundle.pem -inform PEM -out rds-combined-ca-bundle.crt
 
 # Install CA-certificate for AWS DocumentDB
 RUN update-ca-certificates
