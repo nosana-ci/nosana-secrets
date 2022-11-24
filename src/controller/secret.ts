@@ -11,7 +11,7 @@ export default {
     if (config.storageConnection.includes("docdb.amazonaws.com")) {
       storage = new Keyv(config.storageConnection, {
         namespace: address,
-        // tlsCAFile: "/app/rds-combined-ca-bundle.pem",
+        tlsCAFile: "/app/rds-combined-ca-bundle.pem",
       });
     } else {
       storage = new Keyv(config.storageConnection, {
@@ -40,7 +40,7 @@ export default {
     if (config.storageConnection.includes("docdb.amazonaws.com")) {
       storage = new Keyv(config.storageConnection, {
         namespace: userAddress,
-        // tlsCAFile: "/app/rds-combined-ca-bundle.pem",
+        tlsCAFile: "/app/rds-combined-ca-bundle.pem",
       });
     } else {
       storage = new Keyv(config.storageConnection, {
