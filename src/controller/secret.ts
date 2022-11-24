@@ -13,7 +13,7 @@ export default {
         namespace: address,
         ssl: true,
         sslValidate: true,
-        sslCA: "rds-combined-ca-bundle.pem",
+        sslCA: "/app/rds-combined-ca-bundle.pem",
       });
     } else {
       storage = new Keyv(config.storageConnection, {
@@ -44,7 +44,7 @@ export default {
         namespace: userAddress,
         ssl: true,
         sslValidate: true,
-        sslCA: "rds-combined-ca-bundle.pem",
+        sslCA: "/app/rds-combined-ca-bundle.pem",
       });
     } else {
       storage = new Keyv(config.storageConnection, {
