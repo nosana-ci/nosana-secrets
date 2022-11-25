@@ -47,20 +47,13 @@ export default {
         namespace: userAddress,
       });
     }
-    const secrets: { [key: string]: any } = {};
+    let secrets: { [key: string]: any } = {};
     if (retrieveAllSecrets) {
       for await (const [key, value] of storage.iterator()) {
         secrets[key] = value;
       }
     } else {
-      for (let i = 0; i < secretKeys.length; i++) {
-        console.log(`retrieiving secret for ${userAddress}.${secretKeys[i]}`);
-        try {
-          secrets[secretKeys[i]] = await storage.get(secretKeys[i]);
-        } catch (e) {
-          console.error(`Could not retrieve ${secretKeys[i]}`, e);
-        }
-      }
+      secrets = await storage.get(secretKeys);
     }
 
     ctx.ok(secrets);
