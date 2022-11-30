@@ -1,22 +1,22 @@
-import KoaRouter from "koa-router";
+import KoaRouter from 'koa-router';
 
 const router = new KoaRouter();
 
-import authenticated from "./middleware/auth";
-import authController from "./controller/auth";
-import secretController from "./controller/secret";
+import authenticated from './middleware/auth';
+import authController from './controller/auth';
+import secretController from './controller/secret';
 
-router.post("/login", authController.login);
-router.get("/secrets", authenticated, secretController.getSecrets);
-router.post("/secrets", authenticated, secretController.setSecrets);
-router.delete("/secrets", authenticated, secretController.deleteSecret);
+router.post('/login', authController.login);
+router.get('/secrets', authenticated, secretController.getSecrets);
+router.post('/secrets', authenticated, secretController.setSecrets);
+router.delete('/secrets', authenticated, secretController.deleteSecret);
 
 // Public routes
-router.get("/", async (ctx: any) => {
-  ctx.ok("Welcome to Nosana Secret Manager");
+router.get('/', async (ctx: any) => {
+  ctx.ok('Welcome to Nosana Secret Manager');
 });
 
-router.get("/health", async (ctx: any) => {
+router.get('/health', async (ctx: any) => {
   ctx.ok();
 });
 

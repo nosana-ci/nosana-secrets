@@ -13,5 +13,4 @@ docker-compose.yml
 renovate.json
 Dockerfile
 .gitlab-ci.yml
-.gitignore
 .dockerignore
