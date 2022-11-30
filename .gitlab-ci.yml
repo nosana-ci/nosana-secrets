@@ -10,7 +10,7 @@ variables:
   AUTO_BUMP_SCG_PREFIX: image_tag [^}]*= { dev = \"
 
 .npm:
-  image: node:16-alpine # align with Dockerfile
+  image: node:18.12.1 # align with Dockerfile
   cache:
     paths:
       - node_modules

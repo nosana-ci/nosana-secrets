@@ -1,21 +1,20 @@
 # build container
 FROM node:18.12.1 as build-base
 
-# install dependencies
+# install all application dependencies
 WORKDIR /build
 COPY package*.json .
 RUN npm ci
 
-# pull ca certs
+# pull ca certs for aws docdb
 RUN curl -O https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
 
-# build application
+# build application remove dev dependencies
 COPY . .
-RUN npm run lint \
- && npm run build \
+RUN npm run build \
  && npm ci --omit=dev
 
-# prepare application
+# prepare application for copy
 RUN mkdir app \
  && mv node_modules rds-combined-ca-bundle.pem dist/* app \
  && mv config/keys/*.key app/config/keys
@@ -30,7 +29,7 @@ ENV NODE_ENV=production \
 # packages
 RUN apk add --update --no-cache nodejs openssl
 
-# application
+# copy application
 WORKDIR /app
 COPY --from=build-base /build/app .
 
