@@ -39,4 +39,4 @@ RUN openssl x509 -in rds-combined-ca-bundle.pem -inform PEM -out rds-combined-ca
 
 # entrypoint
 EXPOSE 4124
-#ENTRYPOINT ["node", "index.js"]
+ENTRYPOINT ["node", "index.js"]
