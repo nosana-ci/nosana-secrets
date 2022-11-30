@@ -1,5 +1,7 @@
+ARG NODE_VERSION=18.12.1
+
 # build container
-FROM node:18.12.1 as build-base
+FROM node:$NODE_VERSION as build-base
 
 # install all application dependencies
 WORKDIR /build
@@ -21,6 +23,7 @@ RUN mkdir app \
 
 # main container
 FROM alpine:3.17.0
+ARG NODE_VERSION
 
 # environment
 ENV NODE_ENV=production \
@@ -28,6 +31,7 @@ ENV NODE_ENV=production \
 
 # packages
 RUN apk add --update --no-cache nodejs openssl
+RUN node --version | grep $NODE_VERSION
 
 # copy application
 WORKDIR /app
