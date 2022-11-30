@@ -1,5 +1,5 @@
-import { inspect } from "util";
-import { Context } from "koa";
+import { inspect } from 'util';
+import { Context } from 'koa';
 
 import {
   GenericError,
@@ -8,15 +8,15 @@ import {
   ForbiddenError,
   NotFoundError,
   TooManyRequestsError,
-} from "../generic/errors";
+} from '../generic/errors';
 
 const formatError = (err: any) => {
-  if (typeof err === "string") {
+  if (typeof err === 'string') {
     return { type: err };
   }
 
   const body = err instanceof GenericError ? err.body : { error: err.message };
-  if (err.path && typeof err.message === "string") {
+  if (err.path && typeof err.message === 'string') {
     body.error = {};
     body.error[err.path] = err.message;
   }
@@ -43,9 +43,9 @@ export default () =>
         case TooManyRequestsError:
           return ctx.reply(429, formatError(err));
         default:
-          console.error("Internal Server Error", inspect(err, { depth: 3 }));
+          console.error('Internal Server Error', inspect(err, { depth: 3 }));
 
-          return ctx.reply(500, formatError("InternalServerError"));
+          return ctx.reply(500, formatError('InternalServerError'));
       }
     }
   };

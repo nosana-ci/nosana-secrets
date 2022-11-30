@@ -1,12 +1,12 @@
-import * as anchor from "@project-serum/anchor";
-import { sendAndConfirmRawTransaction } from "@solana/web3.js";
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import idl from "./nosana_jobs";
-import config from "../generic/config";
+import * as anchor from '@project-serum/anchor';
+import { sendAndConfirmRawTransaction } from '@solana/web3.js';
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import idl from './nosana_jobs';
+import config from '../generic/config';
 const ENV = config.blockchain.solanaNet;
 
 let node = ENV;
-if (!node.includes("http")) {
+if (!node.includes('http')) {
   node = anchor.web3.clusterApiUrl(ENV);
 }
 
@@ -19,13 +19,11 @@ class AnchorClient {
   rewardsProgram?: anchor.Program<any>;
   accounts?: any;
   constructor(keypair: anchor.web3.Keypair) {
-    console.log("initializing anchor client");
-    this.rewardsProgramId = new anchor.web3.PublicKey(
-      config.blockchain.rewardsProgramId
-    );
+    console.log('initializing anchor client');
+    this.rewardsProgramId = new anchor.web3.PublicKey(config.blockchain.rewardsProgramId);
     this.programId = config.blockchain.jobProgramId;
     this.connection = new anchor.web3.Connection(node);
-    console.log("\n\nConnected to", node);
+    console.log('\n\nConnected to', node);
 
     let wallet;
     if (keypair) {
@@ -34,11 +32,7 @@ class AnchorClient {
     // maps anchor calls to Phantom direction
     this.provider = new anchor.AnchorProvider(this.connection, wallet, {});
     this.program = new anchor.Program(idl, this.programId, this.provider);
-    this.rewardsProgram = new anchor.Program(
-      idl,
-      this.rewardsProgramId,
-      this.provider
-    );
+    this.rewardsProgram = new anchor.Program(idl, this.rewardsProgramId, this.provider);
 
     // setup accounts
     return this;
@@ -61,16 +55,14 @@ class AnchorClient {
       user: null,
     };
 
-    [this.accounts.rewardsVault] =
-      await anchor.web3.PublicKey.findProgramAddress(
-        [this.accounts.mint.toBuffer()],
-        this.rewardsProgram.programId
-      );
-    [this.accounts.rewardsReflection] =
-      await anchor.web3.PublicKey.findProgramAddress(
-        [anchor.utils.bytes.utf8.encode("reflection")],
-        this.rewardsProgram.programId
-      );
+    [this.accounts.rewardsVault] = await anchor.web3.PublicKey.findProgramAddress(
+      [this.accounts.mint.toBuffer()],
+      this.rewardsProgram.programId
+    );
+    [this.accounts.rewardsReflection] = await anchor.web3.PublicKey.findProgramAddress(
+      [anchor.utils.bytes.utf8.encode('reflection')],
+      this.rewardsProgram.programId
+    );
 
     return this;
   }
@@ -85,11 +77,7 @@ class AnchorClient {
     if (opts === undefined) {
       opts = this.provider.opts;
     }
-    tx.recentBlockhash = (
-      await this.provider.connection.getLatestBlockhash(
-        opts.preflightCommitment
-      )
-    ).blockhash;
+    tx.recentBlockhash = (await this.provider.connection.getLatestBlockhash(opts.preflightCommitment)).blockhash;
     await this.provider.wallet.signTransaction(tx);
     signers
       .filter((s: any) => s !== undefined)
@@ -97,11 +85,7 @@ class AnchorClient {
         tx.partialSign(kp);
       });
     const rawTx = tx.serialize();
-    const txId = await sendAndConfirmRawTransaction(
-      this.provider.connection,
-      rawTx,
-      opts
-    );
+    const txId = await sendAndConfirmRawTransaction(this.provider.connection, rawTx, opts);
     return txId;
   }
   async fetchJob?(jobId: anchor.Address) {
@@ -109,9 +93,7 @@ class AnchorClient {
   }
   async fetchRunAccount?(jobPublicKey: { toString: () => any }) {
     const res = (
-      await this.program.account.runAccount.all([
-        { memcmp: { offset: 8, bytes: jobPublicKey.toString() } },
-      ])
+      await this.program.account.runAccount.all([{ memcmp: { offset: 8, bytes: jobPublicKey.toString() } }])
     )[0];
     return res;
   }

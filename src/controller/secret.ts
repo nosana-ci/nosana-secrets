@@ -1,6 +1,6 @@
-import config from "../generic/config";
+import config from '../generic/config';
 
-import Keyv from "keyv";
+import Keyv from 'keyv';
 
 export default {
   setSecrets: async (ctx: any) => {
@@ -8,10 +8,10 @@ export default {
     const { user } = ctx.state;
     const address = user.address;
     let storage;
-    if (config.storageConnection.includes("docdb.amazonaws.com")) {
+    if (config.storageConnection.includes('docdb.amazonaws.com')) {
       storage = new Keyv(config.storageConnection, {
         namespace: address,
-        tlsCAFile: "/app/rds-combined-ca-bundle.pem",
+        tlsCAFile: '/app/rds-combined-ca-bundle.pem',
       });
     } else {
       storage = new Keyv(config.storageConnection, {
@@ -29,7 +29,7 @@ export default {
   getSecrets: async (ctx: any) => {
     const { user } = ctx.state;
     let userAddress = user.userAddress;
-    let secretKeys: string[] = user.secrets;
+    const secretKeys: string[] = user.secrets;
     let retrieveAllSecrets = false;
     if (!userAddress) {
       // retrieve all your own secrets
@@ -37,10 +37,10 @@ export default {
       retrieveAllSecrets = true;
     }
     let storage;
-    if (config.storageConnection.includes("docdb.amazonaws.com")) {
+    if (config.storageConnection.includes('docdb.amazonaws.com')) {
       storage = new Keyv(config.storageConnection, {
         namespace: userAddress,
-        tlsCAFile: "/app/rds-combined-ca-bundle.pem",
+        tlsCAFile: '/app/rds-combined-ca-bundle.pem',
       });
     } else {
       storage = new Keyv(config.storageConnection, {

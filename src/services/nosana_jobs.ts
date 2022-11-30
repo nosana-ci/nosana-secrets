@@ -1,143 +1,143 @@
-import { Idl } from "@project-serum/anchor";
+import { Idl } from '@project-serum/anchor';
 
 const idl: Idl = {
-  version: "0.1.0",
-  name: "nosana_jobs",
+  version: '0.1.0',
+  name: 'nosana_jobs',
   instructions: [
     {
-      name: "open",
+      name: 'open',
       accounts: [
         {
-          name: "mint",
+          name: 'mint',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "market",
+          name: 'market',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "vault",
+          name: 'vault',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "accessKey",
+          name: 'accessKey',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "rent",
+          name: 'rent',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "systemProgram",
+          name: 'systemProgram',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "tokenProgram",
+          name: 'tokenProgram',
           isMut: false,
           isSigner: false,
         },
       ],
       args: [
         {
-          name: "jobExpiration",
-          type: "i64",
+          name: 'jobExpiration',
+          type: 'i64',
         },
         {
-          name: "jobPrice",
-          type: "u64",
+          name: 'jobPrice',
+          type: 'u64',
         },
         {
-          name: "jobTimeout",
-          type: "i64",
+          name: 'jobTimeout',
+          type: 'i64',
         },
         {
-          name: "jobType",
-          type: "u8",
+          name: 'jobType',
+          type: 'u8',
         },
         {
-          name: "nodeXnosMinimum",
-          type: "u64",
+          name: 'nodeXnosMinimum',
+          type: 'u64',
         },
       ],
     },
     {
-      name: "update",
+      name: 'update',
       accounts: [
         {
-          name: "market",
+          name: 'market',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "accessKey",
+          name: 'accessKey',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
       ],
       args: [
         {
-          name: "jobExpiration",
-          type: "i64",
+          name: 'jobExpiration',
+          type: 'i64',
         },
         {
-          name: "jobPrice",
-          type: "u64",
+          name: 'jobPrice',
+          type: 'u64',
         },
         {
-          name: "jobTimeout",
-          type: "i64",
+          name: 'jobTimeout',
+          type: 'i64',
         },
         {
-          name: "jobType",
-          type: "u8",
+          name: 'jobType',
+          type: 'u8',
         },
         {
-          name: "nodeStakeMinimum",
-          type: "u64",
+          name: 'nodeStakeMinimum',
+          type: 'u64',
         },
       ],
     },
     {
-      name: "close",
+      name: 'close',
       accounts: [
         {
-          name: "market",
+          name: 'market',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "vault",
+          name: 'vault',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "user",
+          name: 'user',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
         {
-          name: "tokenProgram",
+          name: 'tokenProgram',
           isMut: false,
           isSigner: false,
         },
@@ -145,113 +145,113 @@ const idl: Idl = {
       args: [],
     },
     {
-      name: "list",
+      name: 'list',
       accounts: [
         {
-          name: "job",
+          name: 'job',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "market",
+          name: 'market',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "run",
+          name: 'run',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "user",
+          name: 'user',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "vault",
+          name: 'vault',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "payer",
+          name: 'payer',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "rewardsReflection",
+          name: 'rewardsReflection',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "rewardsVault",
+          name: 'rewardsVault',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
         {
-          name: "rewardsProgram",
+          name: 'rewardsProgram',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "tokenProgram",
+          name: 'tokenProgram',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "systemProgram",
+          name: 'systemProgram',
           isMut: false,
           isSigner: false,
         },
       ],
       args: [
         {
-          name: "ipfsJob",
+          name: 'ipfsJob',
           type: {
-            array: ["u8", 32],
+            array: ['u8', 32],
           },
         },
       ],
     },
     {
-      name: "recover",
+      name: 'recover',
       accounts: [
         {
-          name: "job",
+          name: 'job',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "market",
+          name: 'market',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "vault",
+          name: 'vault',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "user",
+          name: 'user',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "payer",
+          name: 'payer',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
         {
-          name: "tokenProgram",
+          name: 'tokenProgram',
           isMut: false,
           isSigner: false,
         },
@@ -259,45 +259,45 @@ const idl: Idl = {
       args: [],
     },
     {
-      name: "work",
+      name: 'work',
       accounts: [
         {
-          name: "run",
+          name: 'run',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "market",
+          name: 'market',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "payer",
+          name: 'payer',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "stake",
+          name: 'stake',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "nft",
+          name: 'nft',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "metadata",
+          name: 'metadata',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
         {
-          name: "systemProgram",
+          name: 'systemProgram',
           isMut: false,
           isSigner: false,
         },
@@ -305,15 +305,15 @@ const idl: Idl = {
       args: [],
     },
     {
-      name: "stop",
+      name: 'stop',
       accounts: [
         {
-          name: "market",
+          name: 'market',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
@@ -321,50 +321,50 @@ const idl: Idl = {
       args: [],
     },
     {
-      name: "claim",
+      name: 'claim',
       accounts: [
         {
-          name: "job",
+          name: 'job',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "run",
+          name: 'run',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "market",
+          name: 'market',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "stake",
+          name: 'stake',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "nft",
+          name: 'nft',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "metadata",
+          name: 'metadata',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "payer",
+          name: 'payer',
           isMut: true,
           isSigner: true,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
         {
-          name: "systemProgram",
+          name: 'systemProgram',
           isMut: false,
           isSigner: false,
         },
@@ -372,78 +372,78 @@ const idl: Idl = {
       args: [],
     },
     {
-      name: "finish",
+      name: 'finish',
       accounts: [
         {
-          name: "job",
+          name: 'job',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "run",
+          name: 'run',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "market",
+          name: 'market',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "vault",
+          name: 'vault',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "user",
+          name: 'user',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "payer",
+          name: 'payer',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
         {
-          name: "tokenProgram",
+          name: 'tokenProgram',
           isMut: false,
           isSigner: false,
         },
       ],
       args: [
         {
-          name: "ipfsResult",
+          name: 'ipfsResult',
           type: {
-            array: ["u8", 32],
+            array: ['u8', 32],
           },
         },
       ],
     },
     {
-      name: "quit",
+      name: 'quit',
       accounts: [
         {
-          name: "job",
+          name: 'job',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "run",
+          name: 'run',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "payer",
+          name: 'payer',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "authority",
+          name: 'authority',
           isMut: false,
           isSigner: true,
         },
@@ -451,20 +451,20 @@ const idl: Idl = {
       args: [],
     },
     {
-      name: "clean",
+      name: 'clean',
       accounts: [
         {
-          name: "job",
+          name: 'job',
           isMut: true,
           isSigner: false,
         },
         {
-          name: "market",
+          name: 'market',
           isMut: false,
           isSigner: false,
         },
         {
-          name: "payer",
+          name: 'payer',
           isMut: false,
           isSigner: false,
         },
@@ -474,135 +474,135 @@ const idl: Idl = {
   ],
   accounts: [
     {
-      name: "MarketAccount",
+      name: 'MarketAccount',
       type: {
-        kind: "struct",
+        kind: 'struct',
         fields: [
           {
-            name: "authority",
-            type: "publicKey",
+            name: 'authority',
+            type: 'publicKey',
           },
           {
-            name: "jobExpiration",
-            type: "i64",
+            name: 'jobExpiration',
+            type: 'i64',
           },
           {
-            name: "jobPrice",
-            type: "u64",
+            name: 'jobPrice',
+            type: 'u64',
           },
           {
-            name: "jobTimeout",
-            type: "i64",
+            name: 'jobTimeout',
+            type: 'i64',
           },
           {
-            name: "jobType",
-            type: "u8",
+            name: 'jobType',
+            type: 'u8',
           },
           {
-            name: "vault",
-            type: "publicKey",
+            name: 'vault',
+            type: 'publicKey',
           },
           {
-            name: "vaultBump",
-            type: "u8",
+            name: 'vaultBump',
+            type: 'u8',
           },
           {
-            name: "nodeAccessKey",
-            type: "publicKey",
+            name: 'nodeAccessKey',
+            type: 'publicKey',
           },
           {
-            name: "nodeXnosMinimum",
-            type: "u64",
+            name: 'nodeXnosMinimum',
+            type: 'u64',
           },
           {
-            name: "queueType",
-            type: "u8",
+            name: 'queueType',
+            type: 'u8',
           },
           {
-            name: "queue",
+            name: 'queue',
             type: {
-              vec: "publicKey",
+              vec: 'publicKey',
             },
           },
         ],
       },
     },
     {
-      name: "JobAccount",
+      name: 'JobAccount',
       type: {
-        kind: "struct",
+        kind: 'struct',
         fields: [
           {
-            name: "ipfsJob",
+            name: 'ipfsJob',
             type: {
-              array: ["u8", 32],
+              array: ['u8', 32],
             },
           },
           {
-            name: "ipfsResult",
+            name: 'ipfsResult',
             type: {
-              array: ["u8", 32],
+              array: ['u8', 32],
             },
           },
           {
-            name: "market",
-            type: "publicKey",
+            name: 'market',
+            type: 'publicKey',
           },
           {
-            name: "node",
-            type: "publicKey",
+            name: 'node',
+            type: 'publicKey',
           },
           {
-            name: "payer",
-            type: "publicKey",
+            name: 'payer',
+            type: 'publicKey',
           },
           {
-            name: "price",
-            type: "u64",
+            name: 'price',
+            type: 'u64',
           },
           {
-            name: "project",
-            type: "publicKey",
+            name: 'project',
+            type: 'publicKey',
           },
           {
-            name: "state",
-            type: "u8",
+            name: 'state',
+            type: 'u8',
           },
           {
-            name: "timeEnd",
-            type: "i64",
+            name: 'timeEnd',
+            type: 'i64',
           },
           {
-            name: "timeStart",
-            type: "i64",
+            name: 'timeStart',
+            type: 'i64',
           },
         ],
       },
     },
     {
-      name: "RunAccount",
+      name: 'RunAccount',
       type: {
-        kind: "struct",
+        kind: 'struct',
         fields: [
           {
-            name: "job",
-            type: "publicKey",
+            name: 'job',
+            type: 'publicKey',
           },
           {
-            name: "node",
-            type: "publicKey",
+            name: 'node',
+            type: 'publicKey',
           },
           {
-            name: "payer",
-            type: "publicKey",
+            name: 'payer',
+            type: 'publicKey',
           },
           {
-            name: "state",
-            type: "u8",
+            name: 'state',
+            type: 'u8',
           },
           {
-            name: "time",
-            type: "i64",
+            name: 'time',
+            type: 'i64',
           },
         ],
       },
@@ -610,64 +610,64 @@ const idl: Idl = {
   ],
   types: [
     {
-      name: "QueueType",
+      name: 'QueueType',
       type: {
-        kind: "enum",
+        kind: 'enum',
         variants: [
           {
-            name: "Job",
+            name: 'Job',
           },
           {
-            name: "Node",
+            name: 'Node',
           },
           {
-            name: "Empty",
+            name: 'Empty',
           },
         ],
       },
     },
     {
-      name: "JobState",
+      name: 'JobState',
       type: {
-        kind: "enum",
+        kind: 'enum',
         variants: [
           {
-            name: "Queued",
+            name: 'Queued',
           },
           {
-            name: "Running",
+            name: 'Running',
           },
           {
-            name: "Done",
+            name: 'Done',
           },
           {
-            name: "Stopped",
+            name: 'Stopped',
           },
         ],
       },
     },
     {
-      name: "JobType",
+      name: 'JobType',
       type: {
-        kind: "enum",
+        kind: 'enum',
         variants: [
           {
-            name: "Default",
+            name: 'Default',
           },
           {
-            name: "Small",
+            name: 'Small',
           },
           {
-            name: "Medium",
+            name: 'Medium',
           },
           {
-            name: "Large",
+            name: 'Large',
           },
           {
-            name: "Gpu",
+            name: 'Gpu',
           },
           {
-            name: "Unknown",
+            name: 'Unknown',
           },
         ],
       },
