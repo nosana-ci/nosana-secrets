@@ -1,4 +1,4 @@
-import { ValidationError as ValidationErrorYup } from "yup";
+import { ValidationError as ValidationErrorYup } from 'yup';
 
 export class GenericError extends Error {
   body: { message: string; error: Error | undefined };

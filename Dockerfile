@@ -1,40 +1,42 @@
-FROM node:16 as builder
+# build container
+FROM node:18.12.1 as build-base
 
-# Create app directory
-WORKDIR /app
-
-# Install app dependencies
-COPY package.json package-lock.json ./
-
+# install dependencies
+WORKDIR /build
+COPY package*.json .
 RUN npm ci
 
+# pull ca certs
+RUN curl -O https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+
+# build application
 COPY . .
+RUN npm run lint \
+ && npm run build \
+ && npm ci --omit=dev
 
-RUN npm run build
+# prepare application
+RUN mkdir app \
+ && mv node_modules rds-combined-ca-bundle.pem dist/* app \
+ && mv config/keys/*.key app/config/keys
 
-FROM node:16
+# main container
+FROM alpine:3.17.0
 
+# environment
 ENV NODE_ENV=production \
     APP_ENV=production
 
-# Create app directory
+# packages
+RUN apk add --update --no-cache nodejs openssl
+
+# application
 WORKDIR /app
+COPY --from=build-base /build/app .
 
-# Install app dependencies
-COPY package.json package-lock.json ./
+# ca certificates for aws docdb
+RUN openssl x509 -in rds-combined-ca-bundle.pem -inform PEM -out rds-combined-ca-bundle.crt && update-ca-certificates
 
-RUN npm ci --production
-
-COPY config/keys ./config/keys
-
-COPY --from=builder /app/dist ./
-
-# Download and prepare CA-certificate for AWS DocumentDB
-RUN curl -O https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem && \
-    openssl x509 -in rds-combined-ca-bundle.pem -inform PEM -out rds-combined-ca-bundle.crt
-
-# Install CA-certificate for AWS DocumentDB
-RUN update-ca-certificates
-
+# entrypoint
 EXPOSE 4124
-ENTRYPOINT ["npm", "run", "start"]
+#ENTRYPOINT ["node", "index.js"]

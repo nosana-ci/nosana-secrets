@@ -1,5 +1,5 @@
-import axios from "axios";
-import bs58 from "bs58";
+import axios from 'axios';
+import bs58 from 'bs58';
 
 export default {
   solHashToIpfsHash: function (hashArray: any) {
@@ -10,9 +10,7 @@ export default {
     return bs58.encode(Buffer.from(hashArray));
   },
   retrieve: async function (hash: string) {
-    const response = await axios.get(
-      "https://nosana.mypinata.cloud/ipfs/" + hash
-    );
+    const response = await axios.get('https://nosana.mypinata.cloud/ipfs/' + hash);
     return response.data;
   },
 };

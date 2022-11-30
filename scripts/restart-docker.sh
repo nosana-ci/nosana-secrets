@@ -10,4 +10,3 @@ print "Installing dependencies..."
 docker-compose run --rm nosana-secret-manager npm ci
 docker-compose up -d
 print "Done!"
-
