@@ -18,8 +18,7 @@ RUN npm run build \
 
 # prepare application for copy
 RUN mkdir app \
- && mv node_modules rds-combined-ca-bundle.pem dist/* app \
- && mv config/keys/*.key app/config/keys
+ && mv node_modules rds-combined-ca-bundle.pem dist/* app
 
 # main container
 FROM alpine:3.17.0
