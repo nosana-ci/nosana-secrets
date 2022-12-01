@@ -1,9 +1,13 @@
-# Nosana Backend
+# Nosana Secret Manager
+Read more about the secret manager:
+https://docs.nosana.io/secrets/start.html
 
-## Tests
+## Run development
+npm ci
+npm run dev
 
-npm test
 
-## Run
-
+## Run production
+npm ci
+npm run build
 npm run start
