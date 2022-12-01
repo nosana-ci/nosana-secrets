@@ -1,10 +1,11 @@
-const { STORAGE_CONNECTION } = process.env;
+const { STORAGE_CONNECTION, JWT_SECRET } = process.env;
 
 export default {
   env: "development",
   debug: true,
   auth: {
     tokenExpire: "1h",
+    jwtSecret: JWT_SECRET || "nosana-jwt-secret"
   },
   storageConnection: STORAGE_CONNECTION || "sqlite://db.sqlite",
   blockchain: {

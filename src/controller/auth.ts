@@ -19,8 +19,6 @@ import { ValidationError } from '../generic/errors';
 
 import config from '../generic/config';
 
-const { privateCert } = config.keys;
-
 async function generateJwtToken(address: any, userAddress: any, secrets: any) {
   const payload = {
     address,
@@ -30,8 +28,7 @@ async function generateJwtToken(address: any, userAddress: any, secrets: any) {
   // some of the libraries and libraries written in other language,
   // expect base64 encoded secrets, so sign using the base64 to make
   // jwt useable across all platforms and languages.
-  return jwt.sign({ ...payload }, privateCert, {
-    algorithm: 'RS256',
+  return jwt.sign({ ...payload }, config.auth.jwtSecret, {
     expiresIn: config.auth.tokenExpire,
   });
 }

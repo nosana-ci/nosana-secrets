@@ -3,8 +3,6 @@ import { Context } from 'koa';
 
 import config from '../generic/config';
 
-const { publicCert } = config.keys;
-
 import { ForbiddenError } from '../generic/errors';
 
 export default () =>
@@ -16,9 +14,7 @@ export default () =>
       }
 
       try {
-        ctx.state.user = await jwt.verify(token, publicCert, {
-          algorithms: ['RS256'],
-        });
+        ctx.state.user = await jwt.verify(token, config.auth.jwtSecret);
       } catch (err) {
         throw new ForbiddenError(err.message, err.name);
       }
