@@ -61,12 +61,13 @@ export default {
   deleteSecret: async (ctx: any) => {
     const { user } = ctx.state;
     const { key } = ctx.request.body;
-    console.log('delete making connection with storage backend..');
     const storage = new Keyv(config.storageConnection, {
       namespace: user.address,
     });
-    console.log('connected! Deleting key', key);
+    console.log('Deleting key...', key);
     await storage.delete(key);
+    console.log('Deleted!', key);
+
     ctx.ok();
   },
 };
