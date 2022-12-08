@@ -10,7 +10,7 @@ if (!node.includes('http')) {
   node = anchor.web3.clusterApiUrl(ENV);
 }
 
-class AnchorClient {
+export class AnchorClient {
   rewardsProgramId?: anchor.web3.PublicKey;
   programId?: any;
   connection?: anchor.web3.Connection;
@@ -104,4 +104,3 @@ class AnchorClient {
     return await this.program.account.marketAccount.all();
   }
 }
-export default { AnchorClient };
