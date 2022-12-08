@@ -6,6 +6,7 @@ import { AnchorClient } from '../services/solana';
 import ipfs from '../services/ipfs';
 import { ValidationError } from '../generic/errors';
 import config from '../generic/config';
+import { Keypair } from '@solana/web3.js';
 
 class FakeWallet {
   payer: any;
@@ -60,7 +61,7 @@ export default {
     let userAddress;
     let secrets;
     if (data.job) {
-      const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate());
+      const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate()) as unknown as Keypair;
       const anchorClient = new AnchorClient(fakeWallet);
       await anchorClient.setupAccounts();
       const job = await anchorClient.fetchJob(data.job);
