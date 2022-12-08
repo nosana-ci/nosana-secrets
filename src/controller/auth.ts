@@ -1,9 +1,13 @@
-const jwt = require('jsonwebtoken');
-const bs58 = require('bs58');
-const nacl = require('tweetnacl');
-const anchor = require('@project-serum/anchor');
-const { AnchorClient } = require('../services/solana');
-const ipfs = require('../services/ipfs');
+import jwt from 'jsonwebtoken';
+import bs58 from 'bs58';
+import nacl from 'tweetnacl';
+import anchor from '@project-serum/anchor';
+import { AnchorClient } from '../services/solana';
+import ipfs from '../services/ipfs';
+import { ValidationError } from '../generic/errors';
+import config from '../generic/config';
+import { Keypair } from '@solana/web3.js';
+
 class FakeWallet {
   payer: any;
   constructor(payer: any) {
@@ -15,14 +19,11 @@ class FakeWallet {
   }
 }
 
-import { ValidationError } from '../generic/errors';
-
-import config from '../generic/config';
-
-async function generateJwtToken(address: any, userAddress: any, secrets: any) {
+async function generateJwtToken(address: string, userAddress: string, secrets: string[]) {
   const payload = {
     address,
     userAddress,
+    secrets,
   };
 
   // some of the libraries and libraries written in other language,
@@ -60,7 +61,7 @@ export default {
     let userAddress;
     let secrets;
     if (data.job) {
-      const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate());
+      const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate()) as unknown as Keypair;
       const anchorClient = new AnchorClient(fakeWallet);
       await anchorClient.setupAccounts();
       const job = await anchorClient.fetchJob(data.job);
