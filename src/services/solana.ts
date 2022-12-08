@@ -1,5 +1,5 @@
 import * as anchor from '@project-serum/anchor';
-import { sendAndConfirmRawTransaction } from '@solana/web3.js';
+import { ConfirmOptions, PublicKey, sendAndConfirmRawTransaction, Signer, TransactionSignature } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import idl from './nosana_jobs';
 import config from '../generic/config';
@@ -12,11 +12,12 @@ if (!node.includes('http')) {
 
 export class AnchorClient {
   rewardsProgramId?: anchor.web3.PublicKey;
-  programId?: any;
+  programId?: string;
   connection?: anchor.web3.Connection;
   provider?: anchor.AnchorProvider;
-  program?: anchor.Program<any>;
-  rewardsProgram?: anchor.Program<any>;
+  program?: anchor.Program;
+  rewardsProgram?: anchor.Program;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   accounts?: any;
   constructor(keypair: anchor.web3.Keypair) {
     console.log('initializing anchor client');
@@ -38,7 +39,7 @@ export class AnchorClient {
     return this;
   }
 
-  async setupAccounts?() {
+  async setupAccounts?(): Promise<AnchorClient> {
     this.accounts = {
       systemProgram: anchor.web3.SystemProgram.programId,
       rent: anchor.web3.SYSVAR_RENT_PUBKEY,
@@ -66,8 +67,11 @@ export class AnchorClient {
 
     return this;
   }
-
-  async customSend?(tx: anchor.web3.Transaction, signers: any[], opts: any) {
+  async customSend?(
+    tx: anchor.web3.Transaction,
+    signers: Signer[],
+    opts?: ConfirmOptions
+  ): Promise<TransactionSignature> {
     if (signers === undefined) {
       signers = [];
       tx.feePayer = this.provider.wallet.publicKey;
@@ -80,8 +84,8 @@ export class AnchorClient {
     tx.recentBlockhash = (await this.provider.connection.getLatestBlockhash(opts.preflightCommitment)).blockhash;
     await this.provider.wallet.signTransaction(tx);
     signers
-      .filter((s: any) => s !== undefined)
-      .forEach((kp: any) => {
+      .filter((s) => s !== undefined)
+      .forEach((kp) => {
         tx.partialSign(kp);
       });
     const rawTx = tx.serialize();
@@ -91,7 +95,7 @@ export class AnchorClient {
   async fetchJob?(jobId: anchor.Address) {
     return await this.program.account.jobAccount.fetch(jobId);
   }
-  async fetchRunAccount?(jobPublicKey: { toString: () => any }) {
+  async fetchRunAccount?(jobPublicKey: PublicKey) {
     const res = (
       await this.program.account.runAccount.all([{ memcmp: { offset: 8, bytes: jobPublicKey.toString() } }])
     )[0];

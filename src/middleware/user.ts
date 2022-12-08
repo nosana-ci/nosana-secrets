@@ -6,7 +6,7 @@ import config from '../generic/config';
 import { ForbiddenError } from '../generic/errors';
 
 export default () =>
-  async (ctx: Context, next: () => Promise<any>): Promise<any> => {
+  async (ctx: Context, next: () => Promise<void>): Promise<void> => {
     let token = ctx.headers.authorization;
     if (token) {
       if (token.startsWith('Bearer')) {

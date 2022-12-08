@@ -10,7 +10,8 @@ import {
   TooManyRequestsError,
 } from '../generic/errors';
 
-const formatError = (err: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const formatError = (err: any): any => {
   if (typeof err === 'string') {
     return { type: err };
   }
@@ -28,7 +29,7 @@ const formatError = (err: any) => {
 };
 
 export default () =>
-  async (ctx: Context, next: () => Promise<any>): Promise<any> => {
+  async (ctx: Context, next: () => Promise<void>): Promise<void> => {
     try {
       await next();
     } catch (err) {

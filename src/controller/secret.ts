@@ -1,9 +1,9 @@
+import { Context } from 'koa';
+import Keyv from 'keyv';
 import config from '../generic/config';
 
-import Keyv from 'keyv';
-
-const makeConnection = (address: string) => {
-  let storage;
+const makeConnection = (address: string): Keyv => {
+  let storage: Keyv;
   if (config.storageConnection.includes('docdb.amazonaws.com')) {
     storage = new Keyv(config.storageConnection, {
       namespace: address,
@@ -18,7 +18,7 @@ const makeConnection = (address: string) => {
 };
 
 export default {
-  setSecrets: async (ctx: any) => {
+  setSecrets: async (ctx: Context): Promise<void> => {
     const { secrets } = ctx.request.body;
     const { user } = ctx.state;
     const address = user.address;
@@ -31,7 +31,7 @@ export default {
 
     ctx.ok();
   },
-  getSecrets: async (ctx: any) => {
+  getSecrets: async (ctx: Context): Promise<void> => {
     const { user } = ctx.state;
     let userAddress = user.userAddress;
     const secretKeys: string[] = user.secrets;
@@ -43,6 +43,7 @@ export default {
     }
     const storage = makeConnection(userAddress);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let secrets: { [key: string]: any } = {};
     if (retrieveAllSecrets) {
       for await (const [key, value] of storage.iterator()) {
@@ -54,10 +55,10 @@ export default {
 
     ctx.ok(secrets);
   },
-  deleteSecret: async (ctx: any) => {
+  deleteSecret: async (ctx: Context): Promise<void> => {
     const { user } = ctx.state;
     const { key } = ctx.request.body;
-    const storage = makeConnection(user.address);
+    const storage: Keyv = makeConnection(user.address);
 
     console.log('Deleting key...', key);
     await storage.delete(key);

@@ -7,10 +7,11 @@ import ipfs from '../services/ipfs';
 import { ValidationError } from '../generic/errors';
 import config from '../generic/config';
 import { Keypair } from '@solana/web3.js';
+import { Context } from 'koa';
 
 class FakeWallet {
-  payer: any;
-  constructor(payer: any) {
+  payer: Keypair;
+  constructor(payer: Keypair) {
     this.payer = payer;
   }
 
@@ -19,7 +20,7 @@ class FakeWallet {
   }
 }
 
-async function generateJwtToken(address: string, userAddress: string, secrets: string[]) {
+async function generateJwtToken(address: string, userAddress: string, secrets: string[]): Promise<string> {
   const payload = {
     address,
     userAddress,
@@ -35,13 +36,13 @@ async function generateJwtToken(address: string, userAddress: string, secrets: s
 }
 
 export default {
-  payload: (ctx: { state: { user: any }; ok: (arg0: any) => void }) => {
+  payload: (ctx: Context): void => {
     const { user } = ctx.state;
 
     ctx.ok(user);
   },
   generateJwtToken,
-  login: async (ctx: any) => {
+  login: async (ctx: Context): Promise<void> => {
     const data = ctx.request.body;
     if (!data.address || !data.signature || !data.timestamp) {
       throw new ValidationError('address/signature/timestamp missing');
@@ -62,7 +63,7 @@ export default {
     let secrets;
     if (data.job) {
       const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate()) as unknown as Keypair;
-      const anchorClient = new AnchorClient(fakeWallet);
+      const anchorClient: AnchorClient = new AnchorClient(fakeWallet);
       await anchorClient.setupAccounts();
       const job = await anchorClient.fetchJob(data.job);
       if (!job) {
@@ -80,7 +81,7 @@ export default {
       secrets = ipfsJob.secrets;
     }
 
-    const token = await generateJwtToken(data.address, userAddress, secrets);
+    const token: string = await generateJwtToken(data.address, userAddress, secrets);
 
     ctx.ok({ token });
   },
