@@ -43,6 +43,12 @@ export default {
     }
     const storage = makeConnection(userAddress);
 
+    console.log(
+      `${user.address} is requesting ${
+        retrieveAllSecrets ? 'all' : JSON.stringify(secretKeys)
+      } secrets for ${userAddress}`
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const secrets: { [key: string]: any } = {};
     if (retrieveAllSecrets) {
