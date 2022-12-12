@@ -44,13 +44,15 @@ export default {
     const storage = makeConnection(userAddress);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let secrets: { [key: string]: any } = {};
+    const secrets: { [key: string]: any } = {};
     if (retrieveAllSecrets) {
       for await (const [key, value] of storage.iterator()) {
         secrets[key] = value;
       }
     } else {
-      secrets = await storage.get(secretKeys);
+      for (let i = 0; i < secretKeys.length; i++) {
+        secrets[secretKeys[i]] = await storage.get(secretKeys[i]);
+      }
     }
 
     ctx.ok(secrets);
