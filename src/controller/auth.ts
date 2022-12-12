@@ -78,6 +78,7 @@ export default {
       userAddress = job.project;
       const hash = ipfs.solHashToIpfsHash(job.ipfsJob);
       const ipfsJob = await ipfs.retrieve(hash);
+      console.log('retrieving token for', ipfsJob);
       secrets = ipfsJob.secrets;
     }
 

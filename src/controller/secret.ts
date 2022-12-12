@@ -1,6 +1,7 @@
 import { Context } from 'koa';
 import Keyv from 'keyv';
 import config from '../generic/config';
+import { ValidationError } from '../generic/errors';
 
 const makeConnection = (address: string): Keyv => {
   let storage: Keyv;
@@ -40,6 +41,8 @@ export default {
       // retrieve all your own secrets
       userAddress = user.address;
       retrieveAllSecrets = true;
+    } else if (!secretKeys) {
+      throw new ValidationError('no secrets in job');
     }
     const storage = makeConnection(userAddress);
 
