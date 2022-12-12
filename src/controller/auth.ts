@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bs58 from 'bs58';
 import nacl from 'tweetnacl';
-import anchor from '@project-serum/anchor';
+import * as anchor from '@project-serum/anchor';
 import { AnchorClient } from '../services/solana';
 import ipfs from '../services/ipfs';
 import { ValidationError } from '../generic/errors';

@@ -1,4 +1,3 @@
-require("dotenv").config();
 import Koa from "koa";
 import { router } from "./src/router";
 import cors from "@koa/cors";
@@ -7,7 +6,7 @@ import errorMiddleware from "./src/middleware/error";
 import userMiddleware from "./src/middleware/user";
 import bodyParser from "koa-bodyparser";
 
-const app = new Koa();
+const app:Koa = new Koa();
 
 app.keys = ["nosanasecret"];
 app.proxy = true;
