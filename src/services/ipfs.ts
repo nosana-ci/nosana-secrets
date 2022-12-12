@@ -1,4 +1,3 @@
-import axios from 'axios';
 import bs58 from 'bs58';
 
 export default {
@@ -10,7 +9,8 @@ export default {
     return bs58.encode(Buffer.from(hashArray));
   },
   retrieve: async function (hash: string) {
-    const response = await axios.get('https://nosana.mypinata.cloud/ipfs/' + hash);
-    return response.data;
+    const response = await fetch('https://nosana.mypinata.cloud/ipfs/' + hash);
+    const json = await response.json();
+    return json;
   },
 };
