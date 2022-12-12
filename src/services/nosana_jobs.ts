@@ -67,7 +67,7 @@ const idl: Idl = {
         },
         {
           name: 'nodeXnosMinimum',
-          type: 'u64',
+          type: 'u128',
         },
       ],
     },
@@ -109,7 +109,7 @@ const idl: Idl = {
         },
         {
           name: 'nodeStakeMinimum',
-          type: 'u64',
+          type: 'u128',
         },
       ],
     },
@@ -512,7 +512,7 @@ const idl: Idl = {
           },
           {
             name: 'nodeXnosMinimum',
-            type: 'u64',
+            type: 'u128',
           },
           {
             name: 'queueType',
@@ -671,6 +671,63 @@ const idl: Idl = {
           },
         ],
       },
+    },
+  ],
+  errors: [
+    {
+      code: 6000,
+      name: 'InvalidMarketAccount',
+      msg: 'This market account is not valid.',
+    },
+    {
+      code: 6001,
+      name: 'InvalidJobAccount',
+      msg: 'This job account is not valid.',
+    },
+    {
+      code: 6002,
+      name: 'JobInWrongState',
+      msg: 'This job does not have the right status.',
+    },
+    {
+      code: 6003,
+      name: 'JobNotExpired',
+      msg: 'The job has not yet expired.',
+    },
+    {
+      code: 6004,
+      name: 'NodeQueueDoesNotMatch',
+      msg: 'This node queue does not match.',
+    },
+    {
+      code: 6005,
+      name: 'NodeStakeUnauthorized',
+      msg: 'This node is not authorizing this stake.',
+    },
+    {
+      code: 6006,
+      name: 'NodeNotEnoughStake',
+      msg: 'This node has not staked enough tokens.',
+    },
+    {
+      code: 6007,
+      name: 'NodeAlreadyQueued',
+      msg: 'This node is already present in the queue.',
+    },
+    {
+      code: 6008,
+      name: 'NodeNftWrongMetadata',
+      msg: 'This metadata does not have the correct address.',
+    },
+    {
+      code: 6009,
+      name: 'NodeNftWrongOwner',
+      msg: 'This NFT is not owned by this node.',
+    },
+    {
+      code: 6010,
+      name: 'NodeKeyInvalidCollection',
+      msg: 'This access key does not belong to a verified collection.',
     },
   ],
 };
