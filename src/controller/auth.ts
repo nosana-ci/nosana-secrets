@@ -66,6 +66,7 @@ export default {
       const anchorClient: AnchorClient = new AnchorClient(fakeWallet);
       await anchorClient.setupAccounts();
       const job = await anchorClient.fetchJob(data.job);
+      console.log('job', job);
       if (!job) {
         throw new ValidationError('Could not find job:' + data.job);
       }
@@ -77,8 +78,9 @@ export default {
       }
       userAddress = job.project;
       const hash = ipfs.solHashToIpfsHash(job.ipfsJob);
+      console.log('retrieving ipfs json for hash', hash);
       const ipfsJob = await ipfs.retrieve(hash);
-      console.log('retrieving token for', ipfsJob);
+      console.log('ipfsJob', ipfsJob);
       secrets = ipfsJob.secrets;
     }
 
