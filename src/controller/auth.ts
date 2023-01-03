@@ -83,7 +83,7 @@ export default {
       console.log('retrieving ipfs json for hash', hash);
       const ipfsJob = await ipfs.retrieve(hash);
       console.log('ipfsJob', ipfsJob);
-      secrets = ipfsJob.secrets;
+      secrets = ipfsJob.state['nosana/secrets'];
     }
 
     const token: string = await generateJwtToken(data.address, userAddress, secrets);
