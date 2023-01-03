@@ -65,6 +65,8 @@ export default {
       const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate()) as unknown as Keypair;
       const anchorClient: AnchorClient = new AnchorClient(fakeWallet);
       await anchorClient.setupAccounts();
+      const run = await anchorClient.fetchRunAccount(data.job);
+      console.log('run', run);
       const job = await anchorClient.fetchJob(data.job);
       console.log('job', job);
       if (!job) {
@@ -73,7 +75,7 @@ export default {
       if (job.state >= 2) {
         throw new ValidationError('Job already finished:' + data.job);
       }
-      if (job.node.toString() !== data.address) {
+      if (run.account.node.toString() !== data.address) {
         throw new ValidationError('You did not claim this job:' + data.job);
       }
       userAddress = job.project;
