@@ -65,25 +65,40 @@ export default {
       const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate()) as unknown as Keypair;
       const anchorClient: AnchorClient = new AnchorClient(fakeWallet);
       await anchorClient.setupAccounts();
-      const run = await anchorClient.fetchRunAccount(data.job);
-      console.log('run', run);
+
       const job = await anchorClient.fetchJob(data.job);
       console.log('job', job);
       if (!job) {
         throw new ValidationError('Could not find job:' + data.job);
       }
+
       if (job.state >= 2) {
-        throw new ValidationError('Job already finished:' + data.job);
+        // For finished jobs allow projects to access the secrets
+        // specified in the results file.
+        if (job.project.toString() !== data.address) {
+          throw new ValidationError('You do not own this job:' + data.job);
+        }
+        userAddress = job.node;
+        const hash = ipfs.solHashToIpfsHash(job.ipfsResult);
+        console.log('retrieving ipfs json for hash', hash);
+        const ipfsResult = await ipfs.retrieve(hash);
+        console.log('ipfsResult', ipfsResult);
+        secrets = ipfsResult.state['nosana/secrets'];
+      } else {
+        // For running jobs allows nodes access to secrets specified
+        // on the job file.
+        const run = await anchorClient.fetchRunAccount(data.job);
+        console.log('run', run);
+        if (run.account.node.toString() !== data.address) {
+          throw new ValidationError('You did not claim this job:' + data.job);
+        }
+        userAddress = job.project;
+        const hash = ipfs.solHashToIpfsHash(job.ipfsJob);
+        console.log('retrieving ipfs json for hash', hash);
+        const ipfsJob = await ipfs.retrieve(hash);
+        console.log('ipfsJob', ipfsJob);
+        secrets = ipfsJob.state['nosana/secrets'];
       }
-      if (run.account.node.toString() !== data.address) {
-        throw new ValidationError('You did not claim this job:' + data.job);
-      }
-      userAddress = job.project;
-      const hash = ipfs.solHashToIpfsHash(job.ipfsJob);
-      console.log('retrieving ipfs json for hash', hash);
-      const ipfsJob = await ipfs.retrieve(hash);
-      console.log('ipfsJob', ipfsJob);
-      secrets = ipfsJob.state['nosana/secrets'];
     }
 
     const token: string = await generateJwtToken(data.address, userAddress, secrets);
