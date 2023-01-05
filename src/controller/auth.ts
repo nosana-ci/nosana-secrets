@@ -62,6 +62,7 @@ export default {
     let userAddress;
     let secrets;
     if (data.job) {
+      console.log('> Requesting a secret for job ' + data.job);
       const fakeWallet = new FakeWallet(anchor.web3.Keypair.generate()) as unknown as Keypair;
       const anchorClient: AnchorClient = new AnchorClient(fakeWallet);
       await anchorClient.setupAccounts();
@@ -73,12 +74,15 @@ export default {
       }
 
       if (job.state >= 2) {
+        console.log('> Job is in finished state, requesting secrets for project ' + job.project.toString());
+        console.log('> Our address is ' + data.address);
+        console.log('> Job node is ' + job.node.toString());
         // For finished jobs allow projects to access the secrets
         // specified in the results file.
         if (job.project.toString() !== data.address) {
           throw new ValidationError('You do not own this job:' + data.job);
         }
-        userAddress = job.node;
+        userAddress = job.node.toString();
         const hash = ipfs.solHashToIpfsHash(job.ipfsResult);
         console.log('retrieving ipfs json for hash', hash);
         const ipfsResult = await ipfs.retrieve(hash);
