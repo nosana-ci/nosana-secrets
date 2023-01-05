@@ -43,6 +43,8 @@ export default {
   },
   generateJwtToken,
   login: async (ctx: Context): Promise<void> => {
+    console.log('> Start of auth login handler');
+
     const data = ctx.request.body;
     if (!data.address || !data.signature || !data.timestamp) {
       throw new ValidationError('address/signature/timestamp missing');
@@ -58,6 +60,8 @@ export default {
     if (!nacl.sign.detached.verify(message, signature_bytes, address_bytes)) {
       throw new ValidationError('invalid signature');
     }
+
+    console.log('> Signature is valid');
 
     let userAddress;
     let secrets;
