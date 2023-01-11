@@ -20,20 +20,25 @@ const makeConnection = (address: string): Keyv => {
 
 export default {
   setSecrets: async (ctx: Context): Promise<void> => {
-    const { secrets } = ctx.request.body;
+    const { secrets, prefix } = ctx.request.body;
     const { user } = ctx.state;
     const address = user.address;
     const storage = makeConnection(address);
 
     for (const key in secrets) {
-      console.log(`storing secret for ${address}.${key}`);
-      await storage.set(key, secrets[key]);
+      let name = key;
+      if (prefix) {
+        name = prefix + name;
+      }
+      console.log(`storing secret for ${address}.${name}`);
+      await storage.set(name, secrets[key]);
     }
 
     ctx.ok();
   },
   getSecrets: async (ctx: Context): Promise<void> => {
     const { user } = ctx.state;
+    const { prefix } = ctx.request.query;
     let userAddress = user.userAddress;
     const secretKeys: string[] = user.secrets;
     let retrieveAllSecrets = false;
@@ -56,7 +61,9 @@ export default {
     const secrets: { [key: string]: any } = {};
     if (retrieveAllSecrets) {
       for await (const [key, value] of storage.iterator()) {
-        secrets[key] = value;
+        if (!prefix || key.startsWith(prefix)) {
+          secrets[key] = value;
+        }
       }
     } else {
       for (let i = 0; i < secretKeys.length; i++) {
