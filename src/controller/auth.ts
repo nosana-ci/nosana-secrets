@@ -91,7 +91,11 @@ export default {
         console.log('retrieving ipfs json for hash', hash);
         const ipfsResult = await ipfs.retrieve(hash);
         console.log('ipfsResult', ipfsResult);
-        secrets = ipfsResult.state['nosana/secrets'];
+        if (ipfsResult.state) {
+          secrets = ipfsResult.state['nosana/secrets'];
+        } else {
+          secrets = [];
+        }
       } else {
         // For running jobs allows nodes access to secrets specified
         // on the job file.
@@ -105,7 +109,11 @@ export default {
         console.log('retrieving ipfs json for hash', hash);
         const ipfsJob = await ipfs.retrieve(hash);
         console.log('ipfsJob', ipfsJob);
-        secrets = ipfsJob.state['nosana/secrets'];
+        if (ipfsJob.state) {
+          secrets = ipfsJob.state['nosana/secrets'];
+        } else {
+          secrets = [];
+        }
       }
     }
 
