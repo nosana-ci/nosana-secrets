@@ -1,4 +1,4 @@
-ARG NODE_VERSION=18.12.1
+ARG NODE_VERSION=18.14.2
 
 # build container
 FROM node:$NODE_VERSION as build-base
