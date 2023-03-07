@@ -23,7 +23,7 @@ export class AnchorClient {
     console.log('initializing anchor client');
     this.rewardsProgramId = new anchor.web3.PublicKey(config.blockchain.rewardsProgramId);
     this.programId = config.blockchain.jobProgramId;
-    this.connection = new anchor.web3.Connection(node);
+    this.connection = new anchor.web3.Connection(node, 'confirmed');
     console.log('\n\nConnected to', node);
 
     let wallet;
