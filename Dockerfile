@@ -30,6 +30,7 @@ ENV NODE_ENV=production \
 
 # packages
 RUN apk add --update --no-cache nodejs openssl
+RUN node --version
 RUN node --version | grep $NODE_VERSION
 
 # copy application
