@@ -24,7 +24,9 @@ export default {
     const { user } = ctx.state;
     const address = user.address;
     const storage = makeConnection(address);
-
+    if (typeof secrets !== 'object') {
+      throw new ValidationError('`secrets` param must be an object');
+    }
     for (const key in secrets) {
       let name = key;
       if (prefix) {
