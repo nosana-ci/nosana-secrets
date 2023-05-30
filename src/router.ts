@@ -9,6 +9,7 @@ import secretController from './controller/secret';
 
 router.post('/login', authController.login);
 router.get('/secrets', authenticated, secretController.getSecrets);
+router.get('/secrets/:key', authenticated, secretController.getSecret);
 router.post('/secrets', authenticated, secretController.setSecrets);
 router.delete('/secrets', authenticated, secretController.deleteSecret);
 

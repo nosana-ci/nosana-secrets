@@ -38,6 +38,25 @@ export default {
 
     ctx.ok();
   },
+  getSecret: async (ctx: Context): Promise<void> => {
+    const { user } = ctx.state;
+    const { key } = ctx.params;
+    let userAddress = user.userAddress;
+    const secretKeys: string[] = user.secrets;
+    if (!userAddress) {
+      // retrieve your own secrets
+      userAddress = user.address;
+    } else if (!secretKeys || !secretKeys.includes(key)) {
+      throw new ValidationError(`secret key ${key} not in job`);
+    }
+    const storage = makeConnection(userAddress);
+
+    console.log(`${user.address} is requesting ${key} secret for ${userAddress}`);
+
+    const secret = await storage.get(key);
+
+    ctx.ok(secret);
+  },
   getSecrets: async (ctx: Context): Promise<void> => {
     const { user } = ctx.state;
     const { prefix } = ctx.request.query;
