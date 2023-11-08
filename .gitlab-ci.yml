@@ -3,6 +3,7 @@ include:
     file: docker-container.yml
 
 variables:
+  CONTAINER_PLATFORMS: linux/amd64
   DOCKERFILE_DIR: .
   RUN_AUTO_BUMP: ok
   AUTO_BUMP_REPO: nosana-ci/apps/platform/k8s
