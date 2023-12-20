@@ -49,8 +49,8 @@ export default {
     if (!data.address || !data.signature || !data.timestamp) {
       throw new ValidationError('address/signature/timestamp missing');
     }
-    // Check if timestamp is within 60 seconds
-    if (Math.abs(Math.floor(+new Date() / 1000) - data.timestamp) > 60) {
+    // Check if timestamp is within 1 hour
+    if (Math.abs(Math.floor(+new Date() / 1000) - data.timestamp) > 3600) {
       throw new ValidationError('timestamp expired');
     }
 
